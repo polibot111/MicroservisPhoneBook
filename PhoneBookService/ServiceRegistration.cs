@@ -26,6 +26,7 @@ namespace PhoneBookService
 
             services.AddScoped<IPersonService, PersonService>();
             services.AddScoped<ICommunicationInfoService, CommunicationInfoService>();
+            services.AddScoped<IReportService, ReportService>();
 
             #endregion
 
