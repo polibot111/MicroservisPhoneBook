@@ -18,7 +18,7 @@ namespace PhoneBookService.Controllers
         }
 
         [HttpGet]
-        public async Task<ReportDTO> GetReportByLocation(ReportQuery obj, CancellationToken cancellationToken )
+        public async Task<ReportDTO> GetReportByLocation([FromQuery]ReportQuery obj, CancellationToken cancellationToken )
         {
             return await _reportService.CreateReport(obj,cancellationToken);
         }

@@ -28,7 +28,7 @@ namespace PhoneBookService.Services
                     Id = x.Id,
                     Name = x.Name,
                     Surname = x.Surname,
-                    Company = x.Company
+                    Company = x.Company,
                 }).ToList();
 
                 return persons;
