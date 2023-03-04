@@ -1,13 +1,6 @@
 using MassTransit;
-using MassTransit.Model;
-using MassTransitModel;
-using ReportService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
-builder.Services.Configure<ReportServiceDbSettings>(
-        builder.Configuration.GetSection("ReportServiceDatabase"));
 
 // Add services to the container.
 
@@ -15,8 +8,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-
 
 var app = builder.Build();
 
@@ -30,6 +21,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+
 
 app.MapControllers();
 
