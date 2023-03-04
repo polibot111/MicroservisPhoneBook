@@ -6,6 +6,6 @@ namespace ReportService.Application.CQRS.ReportOrder
     {
         public string Id { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = true;
     }
 }

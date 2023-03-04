@@ -9,7 +9,7 @@ using ReportService.Interface;
 
 namespace ReportService.Services
 {
-    public class ReportOrderService: IReportOrderService
+    public class ReportOrderService : IReportOrderService
     {
         private readonly IMongoCollection<ReportOrder> _reportCollection;
 
@@ -54,7 +54,7 @@ namespace ReportService.Services
 
         public async Task<string> ReportOrderInsertAsync(ReportOrderInsertCommand obj, CancellationToken cancellationToken)
         {
-            await _reportCollection.InsertOneAsync(new ()
+            await _reportCollection.InsertOneAsync(new()
             {
 
                 Id = obj.Id,
@@ -69,11 +69,18 @@ namespace ReportService.Services
 
         public async Task<bool> ReportOrderUpdateStatusAsync(ReportOrderUpdateStatusCommand obj, CancellationToken cancellationToken)
         {
-            var reportOrder = await _reportCollection.FindOneAndReplaceAsync(x => x.Id == obj.Id && x.IsDeleted == false, new ReportOrder { 
-            Status = obj.Status.DisplayName()
+            var reportOrder = (await _reportCollection.FindAsync(x => x.Id == obj.Id && x.IsDeleted == false)).FirstOrDefault();
+            var result = await _reportCollection.FindOneAndReplaceAsync(x => x.Id == obj.Id && x.IsDeleted == false, new ReportOrder
+            {
+                Id = obj.Id,
+                CreatedAt = reportOrder.CreatedAt,
+                UpdatedAt = DateTime.Now,
+                Status = obj.Status.DisplayName(),
+                Content= reportOrder.Content,
+                ReportContentId = reportOrder.ReportContentId
             });
 
-            if (reportOrder is null)
+            if (result is null)
             {
                 return false;
             }
@@ -83,13 +90,19 @@ namespace ReportService.Services
 
         public async Task<bool> ReportOrderUpdateAsync(ReportOrderUpdateCommand obj, CancellationToken cancellationToken)
         {
-            var reportOrder = await _reportCollection.FindOneAndReplaceAsync(x => x.Id == obj.Id && x.IsDeleted == false, new ReportOrder
+            var reportOrder = (await _reportCollection.FindAsync(x => x.Id == obj.Id && x.IsDeleted == false)).FirstOrDefault();
+            var result = await _reportCollection.FindOneAndReplaceAsync(x => x.Id == obj.Id && x.IsDeleted == false, new ReportOrder
             {
+                Id = obj.Id,
+                CreatedAt = reportOrder.CreatedAt,
+                UpdatedAt = DateTime.Now,
                 ReportContentId = obj.ReportContentId,
+                Content = reportOrder.Content,
                 Status = obj.Status.DisplayName()
+
             });
 
-            if (reportOrder is null)
+            if (result is null)
             {
                 return false;
             }
@@ -99,12 +112,19 @@ namespace ReportService.Services
 
         public async Task<bool> ReportOrderUpdateIsDeletedAsync(ReportOrderUpdateIsDeletedCommand obj, CancellationToken cancellationToken)
         {
-            var reportOrder = await _reportCollection.FindOneAndReplaceAsync(x => x.Id == obj.Id && x.IsDeleted == false, new ReportOrder
+            var reportOrder = (await _reportCollection.FindAsync(x => x.Id == obj.Id && x.IsDeleted == false)).FirstOrDefault();
+            var result = await _reportCollection.FindOneAndReplaceAsync(x => x.Id == obj.Id && x.IsDeleted == false, new ReportOrder
             {
-                IsDeleted= obj.IsDeleted,
+                Id = obj.Id,
+                CreatedAt = reportOrder.CreatedAt,
+                UpdatedAt = DateTime.Now,
+                ReportContentId = reportOrder.ReportContentId,
+                Content = reportOrder.Content,
+                Status = reportOrder.Status,
+                IsDeleted = obj.IsDeleted
             });
 
-            if (reportOrder is null)
+            if (result is null)
             {
                 return false;
             }
