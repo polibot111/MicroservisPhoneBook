@@ -18,22 +18,13 @@ namespace ReportService.Controllers
             _contentService = contentService;
         }
 
-        [HttpGet("{Id}")]
-        public async Task<ReportContentDTO> ReportContentGetAsync([FromRoute] ReportContentByIdQuery obj, CancellationToken cancellationToken)
-        {
-            return await _contentService.GetReportContentById(obj, cancellationToken);
-        }
+
 
         [HttpPost]
-        public async Task<string> ReportContentAsync([FromBody] ReportContentInsertCommand obj, CancellationToken cancellationToken)
+        public async Task<string> CreateReportContent([FromBody] ReportContentInsertCommand obj, CancellationToken cancellationToken)
         {
             return await _contentService.InsertReportContent(obj, cancellationToken);
         }
 
-        [HttpDelete]
-        public async Task<bool> ReportContentDeleteAsync([FromBody] ReportContentUpdateIsDeleted obj, CancellationToken cancellationToken)
-        {
-            return await _contentService.UpdateIsDeletedReportContent(obj, cancellationToken);
-        }
     }
 }

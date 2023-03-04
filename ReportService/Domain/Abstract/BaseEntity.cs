@@ -15,6 +15,6 @@ namespace ReportService.Domain.Abstract
 
         [BsonRepresentation(BsonType.DateTime)]
         public DateTime? UpdatedAt { get; set; }
-        public bool IsDeleted { get; set; }
+
     }
 }

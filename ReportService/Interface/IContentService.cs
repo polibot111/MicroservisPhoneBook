@@ -5,8 +5,7 @@ namespace ReportService.Interface
 {
     public interface IContentService
     {
-        Task<ReportContentDTO> GetReportContentById(ReportContentByIdQuery obj, CancellationToken cancellationToken);
+        Task<ReportContentDTO> GetReportContentByOrderId(ReportContentByOrderIdQuery obj, CancellationToken cancellationToken);
         Task<string> InsertReportContent(ReportContentInsertCommand obj, CancellationToken cancellationToken);
-        Task<bool> UpdateIsDeletedReportContent(ReportContentUpdateIsDeleted obj, CancellationToken cancellationToken);
     }
 }
