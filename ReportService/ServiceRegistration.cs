@@ -10,6 +10,7 @@ namespace ReportService
         public static void AddReportServices(this IServiceCollection services)
         {
             services.AddScoped<IReportOrderService, ReportOrderService>();
+            services.AddScoped<IContentService, ContentService>();
         }
     }
 }

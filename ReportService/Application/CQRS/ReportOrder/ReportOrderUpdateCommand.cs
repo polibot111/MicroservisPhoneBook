@@ -10,7 +10,7 @@ namespace ReportService.Application.CQRS.ReportOrder
 
         public string Id { get; set; }
         public ReportStatuEnum Status { get; set; }
-        public ReportContent Content { get; set; }
+        public ReportService.Domain.Entities.ReportContent Content { get; set; }
         public string ReportContentId { get; set; }
     }
 }
