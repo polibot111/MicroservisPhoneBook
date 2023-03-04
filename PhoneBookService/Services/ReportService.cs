@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PhoneBookService.Domain.CQRS.Report;
 using PhoneBookService.Domain.DTO_s.Report;
+using PhoneBookService.Domain.Entities;
 using PhoneBookService.Interface.Repositories;
 using PhoneBookService.Interface.Services;
 
@@ -22,7 +23,11 @@ namespace PhoneBookService.Services
             try
             {
 
-                var people = await _personReadRepository.GetAllAsyncWithLocation(obj.Latitude, obj.Longitude,cancellationToken);
+                var people = (await _personReadRepository.GetAllAsyncWithLocation(obj.Latitude, obj.Longitude, cancellationToken)).Select(x => new Person
+                {
+                    Id = x.Id,
+                    CommunicationInfos= x.CommunicationInfos,
+                });
 
                 int communicationInfoCount = 0;
 
@@ -33,6 +38,7 @@ namespace PhoneBookService.Services
 
                 return new ReportDTO
                 {
+                    ReportId= obj.ReportId,
                     Latitude = obj.Latitude,
                     Longitude = obj.Longitude,
                     PersonCount = people.Count().ToString(),
