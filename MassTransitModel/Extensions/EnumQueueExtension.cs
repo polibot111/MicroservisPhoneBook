@@ -1,4 +1,4 @@
-﻿using MassTransitService.Enums;
+﻿using MassTransitCommon.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MassTransitService.Extensions
+namespace MassTransitCommon.Extensions
 {
     public static class EnumQueueExtension
     {
