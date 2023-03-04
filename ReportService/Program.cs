@@ -1,4 +1,7 @@
 using MassTransit;
+using MassTransit.Configuration;
+using Microsoft.Extensions.Options;
+using ReportService;
 using ReportService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<ReportServiceDbSettings>(
         builder.Configuration.GetSection("ReportServiceDatabase"));
+
+builder.Services.AddScoped<IReportServiceDbSettings>(
+    sp =>
+    {
+        return sp.GetRequiredService<IOptions<ReportServiceDbSettings>>().Value;
+    });
+
+builder.Services.AddReportServices();
 
 // Add services to the container.
 

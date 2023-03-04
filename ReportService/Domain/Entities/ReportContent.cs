@@ -1,11 +1,14 @@
-﻿namespace PhoneBookService.Domain.DTO_s.Report
+﻿using MongoDB.Bson;
+using ReportService.Domain.Abstract;
+
+namespace ReportService.Domain.Entities
 {
-    public class ReportDTO
+    public class ReportContent:BaseEntity
     {
-        public Guid ReportOrderId { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public string PersonCount { get; set; }
         public string CommunicationInfoCount { get; set; }
+        public string ReportOrderId { get; set; }
     }
 }

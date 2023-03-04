@@ -1,11 +1,12 @@
 ﻿namespace ReportService.Infrastructure
 {
-    public class ReportServiceDbSettings
+    public class ReportServiceDbSettings: IReportServiceDbSettings
     {
         public string ConnectionString { get; set; } = null!;
 
         public string DatabaseName { get; set; } = null!;
 
-        public string ReportCollectionName { get; set; } = null!;
+        public string ReportOrderCollectionName { get; set; }
+        public string ReportContentCollectionName { get; set; }
     }
 }

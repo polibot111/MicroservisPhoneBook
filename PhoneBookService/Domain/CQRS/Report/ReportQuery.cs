@@ -2,7 +2,7 @@
 {
     public class ReportQuery
     {
-        public Guid ReportId { get; set; }
+        public Guid ReportOrderId { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
     }
