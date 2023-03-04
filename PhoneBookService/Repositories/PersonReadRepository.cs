@@ -1,4 +1,5 @@
-﻿using PhoneBookService.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using PhoneBookService.Domain.Entities;
 using PhoneBookService.Infrastructure;
 using PhoneBookService.Interface.Repositories;
 using PhoneBookService.Repositories.GenericRepositories;
@@ -9,6 +10,20 @@ namespace PhoneBookService.Repositories
     {
         public PersonReadRepository(PhoneBookServiceDbContext context) : base(context)
         {
+
+        }
+
+        public async Task<IQueryable<Person>> GetAllAsyncWithLocation(string Latitude, string Longitude, CancellationToken cancellationToken, bool tracking = true)
+        {
+
+            return await Task.Run(() =>
+            {
+                var query = Table.AsQueryable().Where(x => x.IsDeleted == false && x.CommunicationInfos.Any(z => z.Longitude == Longitude && z.Latitude == Latitude && z.IsDeleted == false) );
+                if (!tracking)
+                    query = query.AsNoTracking();
+                return query;
+            });
+
 
         }
     }
