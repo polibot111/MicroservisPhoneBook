@@ -1,7 +1,9 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using ReportService.Application.CQRS.ReportContent;
 using ReportService.Application.CQRS.ReportOrder;
 using ReportService.Application.DTO_s;
+using ReportService.Application.Enums;
 using ReportService.Application.Extensions;
 using ReportService.Domain.Entities;
 using ReportService.Infrastructure;
@@ -12,21 +14,23 @@ namespace ReportService.Services
     public class ReportOrderService : IReportOrderService
     {
         private readonly IMongoCollection<ReportOrder> _reportCollection;
+        readonly IContentService _contentService;
 
-        public ReportOrderService(IReportServiceDbSettings reportServiceDbSettings)
+        public ReportOrderService(IReportServiceDbSettings reportServiceDbSettings, IContentService contentService)
         {
             var client = new MongoClient(reportServiceDbSettings.ConnectionString);
 
             var database = client.GetDatabase(reportServiceDbSettings.DatabaseName);
 
             _reportCollection = database.GetCollection<ReportOrder>(reportServiceDbSettings.ReportOrderCollectionName);
-
-
+            _contentService = contentService;
         }
 
         public async Task<ReportOrderDTO> ReportOrderGetAsync(ReportOrderByIdQuery obj, CancellationToken cancellationToken)
         {
             var reportOrder = (await _reportCollection.FindAsync(x => x.Id == obj.Id && x.IsDeleted == false)).FirstOrDefault();
+
+
 
             if (reportOrder is null)
             {
@@ -36,7 +40,24 @@ namespace ReportService.Services
                 };
             }
 
-            if (reportOrder.Content is null)
+            if (reportOrder.Status == ReportStatuEnum.Inceleniyor.DisplayName())
+            {
+                return new()
+                {
+                    Message = $"Raporunuz {reportOrder.Status}."
+                };
+            }
+            else if (reportOrder.Status == ReportStatuEnum.Tamamlandı.DisplayName())
+            {
+                var contentOrder = await _contentService.GetReportContentByOrderId(new ReportContentByOrderIdQuery { ReportOrderId = obj.Id }, cancellationToken);
+                return new()
+                {
+                    Message = $"Raporunuz {reportOrder.Status}.",
+                    Content = contentOrder
+                };
+
+            }
+            else
             {
                 return new()
                 {
@@ -44,11 +65,7 @@ namespace ReportService.Services
                 };
             }
 
-            return new()
-            {
-                Message = $"Raporunuz {reportOrder.Status}.",
-                Content = reportOrder.Content
-            };
+        
 
         }
 
