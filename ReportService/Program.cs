@@ -1,6 +1,4 @@
 using MassTransit;
-using MassTransit.Model;
-using MassTransitModel;
 using ReportService.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);

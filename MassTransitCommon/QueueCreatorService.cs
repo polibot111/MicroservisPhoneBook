@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MassTransitCommon.Enums;
+using MassTransitCommon.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MassTransitCommon
 {
-    public static class QueueCreatorService
+    public class QueueCreatorService
     {
         public static string QueueGenerator(QueueEnum[] enums)
         {

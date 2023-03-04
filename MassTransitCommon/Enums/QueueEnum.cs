@@ -8,6 +8,5 @@ namespace MassTransitCommon.Enums
 {
     public enum QueueEnum
     {
-
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MassTransitCommon.Extensions
 {
-    public static class EnumQueueExtension
+    public static class QueueEnumExtension
     {
         public static string DisplayName(this QueueEnum val)
         {
