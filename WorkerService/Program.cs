@@ -1,6 +1,30 @@
 using MassTransit;
+using Quartz;
+using WorkerService;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddQuartz(q =>
+{
+    q.UseMicrosoftDependencyInjectionScopedJobFactory();
+
+    // Create a "key" for the job
+    var jobKey = new JobKey("CreateReport");
+
+    // Register the job with the DI container
+    q.AddJob<ReportCunsomerWorker>(opts => opts.WithIdentity(jobKey));
+
+    // Create a trigger for the job
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey) // link to the HelloWorldJob
+        .WithIdentity("CreateReport-trigger") // give the trigger a unique name
+        .WithCronSchedule("0 0/1 * 1/1 * ? *")); // run every 5 dakika
+
+});
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 // Add services to the container.
 

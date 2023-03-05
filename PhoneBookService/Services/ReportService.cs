@@ -38,7 +38,6 @@ namespace PhoneBookService.Services
 
                 return new ReportDTO
                 {
-                    ReportOrderId = obj.ReportOrderId,
                     Latitude = obj.Latitude,
                     Longitude = obj.Longitude,
                     PersonCount = people.Count().ToString(),
