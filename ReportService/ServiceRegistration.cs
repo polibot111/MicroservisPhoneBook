@@ -11,6 +11,7 @@ namespace ReportService
         {
             services.AddScoped<IReportOrderService, ReportOrderService>();
             services.AddScoped<IContentService, ContentService>();
+            services.AddScoped<ICreateReportService, CreateReportService>();
         }
     }
 }

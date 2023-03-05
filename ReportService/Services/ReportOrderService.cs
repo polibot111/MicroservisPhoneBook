@@ -14,16 +14,14 @@ namespace ReportService.Services
     public class ReportOrderService : IReportOrderService
     {
         private readonly IMongoCollection<ReportOrder> _reportCollection;
-        readonly IContentService _contentService;
 
-        public ReportOrderService(IReportServiceDbSettings reportServiceDbSettings, IContentService contentService)
+        public ReportOrderService(IReportServiceDbSettings reportServiceDbSettings)
         {
             var client = new MongoClient(reportServiceDbSettings.ConnectionString);
 
             var database = client.GetDatabase(reportServiceDbSettings.DatabaseName);
 
             _reportCollection = database.GetCollection<ReportOrder>(reportServiceDbSettings.ReportOrderCollectionName);
-            _contentService = contentService;
         }
 
         public async Task<ReportOrderDTO> ReportOrderGetAsync(ReportOrderByIdQuery obj, CancellationToken cancellationToken)
@@ -34,38 +32,15 @@ namespace ReportService.Services
 
             if (reportOrder is null)
             {
-                return new()
-                {
-                    Message = "Rapor Bulunamadı"
-                };
+                throw new Exception("Rapor Bulunamadı");
             }
-
-            if (reportOrder.Status == ReportStatuEnum.Inceleniyor.DisplayName())
+            return new()
             {
-                return new()
-                {
-                    Message = $"Raporunuz {reportOrder.Status}."
-                };
-            }
-            else if (reportOrder.Status == ReportStatuEnum.Tamamlandı.DisplayName())
-            {
-                var contentOrder = await _contentService.GetReportContentByOrderId(new ReportContentByOrderIdQuery { ReportOrderId = obj.Id }, cancellationToken);
-                return new()
-                {
-                    Message = $"Raporunuz {reportOrder.Status}.",
-                    Content = contentOrder
-                };
+                Status = reportOrder.Status,
+                Message = $"Raporunuz {reportOrder.Status}."
+            };
 
-            }
-            else
-            {
-                return new()
-                {
-                    Message = $"Raporunuz {reportOrder.Status}."
-                };
-            }
 
-        
 
         }
 
@@ -93,7 +68,7 @@ namespace ReportService.Services
                 CreatedAt = reportOrder.CreatedAt,
                 UpdatedAt = DateTime.Now,
                 Status = obj.Status.DisplayName(),
-                Content= reportOrder.Content,
+                Content = reportOrder.Content,
                 ReportContentId = reportOrder.ReportContentId
             });
 

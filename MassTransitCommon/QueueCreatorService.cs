@@ -10,7 +10,7 @@ namespace MassTransitCommon
 {
     public class QueueCreatorService
     {
-        public static string QueueGenerator(QueueEnum[] enums)
+        public static string QueueGenerator(List<QueueEnum> enums)
         {
 
             string queue = "";

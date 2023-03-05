@@ -11,16 +11,14 @@ namespace ReportService.Services
     {
 
         private readonly IMongoCollection<ReportContent> _reportCollection;
-        private readonly IReportOrderService _reportOrderService;
 
-        public ContentService(IReportServiceDbSettings reportServiceDbSettings, IReportOrderService reportOrderService)
+        public ContentService(IReportServiceDbSettings reportServiceDbSettings)
         {
             var client = new MongoClient(reportServiceDbSettings.ConnectionString);
 
             var database = client.GetDatabase(reportServiceDbSettings.DatabaseName);
 
             _reportCollection = database.GetCollection<ReportContent>(reportServiceDbSettings.ReportContentCollectionName);
-            _reportOrderService = reportOrderService;
         }
 
 
@@ -45,12 +43,6 @@ namespace ReportService.Services
 
         public async Task<string> InsertReportContent(ReportContentInsertCommand obj, CancellationToken cancellationToken)
         {
-            var result = await _reportOrderService.ReportOrderGetAsync(new() { Id = obj.ReportOrderId.ToString()}, cancellationToken);
-
-            if (result is null)
-            {
-                return "Rapor bulunamadı.";
-            }
 
             await _reportCollection.InsertOneAsync(new()
             {
