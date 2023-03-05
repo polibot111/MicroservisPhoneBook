@@ -18,5 +18,7 @@ namespace ReportService.Application.CQRS.ReportOrder
         public bool IsDeleted { get; set; } = false;
         public string Status { get; set; } = ReportStatuEnum.Inceleniyor.DisplayName();
 
+
+
     }
 }

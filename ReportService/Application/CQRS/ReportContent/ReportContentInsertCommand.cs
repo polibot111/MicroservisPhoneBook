@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+﻿
 
 namespace ReportService.Application.CQRS.ReportContent
 {
@@ -15,11 +15,4 @@ namespace ReportService.Application.CQRS.ReportContent
         public Guid ReportOrderId { get; set; }
     }
 
-    public class ReportContentInsertCommandValidator : AbstractValidator<ReportContentInsertCommand>
-    {
-        public ReportContentInsertCommandValidator()
-        {
-            RuleFor(x => x.ReportOrderId).NotEqual(default(Guid)).WithMessage("ReportOrderId Default değer olamaz");
-        }
-    }
 }
