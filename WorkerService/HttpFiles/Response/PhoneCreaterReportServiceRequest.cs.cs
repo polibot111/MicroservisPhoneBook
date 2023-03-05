@@ -1,6 +1,6 @@
-﻿namespace PhoneBookService.Domain.DTO_s.Report
+﻿namespace WorkerService.HttpFiles.Response
 {
-    public class ReportDTO
+    public class ReportCreaterServiceResponse
     {
         public string Latitude { get; set; }
         public string Longitude { get; set; }

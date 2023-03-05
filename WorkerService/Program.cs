@@ -1,6 +1,27 @@
 using MassTransit;
+using Quartz;
+using WorkerService;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddQuartz(q =>
+{
+    q.UseMicrosoftDependencyInjectionScopedJobFactory();
+
+    var jobKey = new JobKey("CreateReport");
+
+    q.AddJob<ReportCunsomerWorker>(opts => opts.WithIdentity(jobKey));
+
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("CreateReport-trigger") 
+        .WithCronSchedule("0 0/1 * 1/1 * ? *")); // run every 5 dakika
+
+});
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 // Add services to the container.
 
